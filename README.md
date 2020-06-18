@@ -1,4 +1,5 @@
-# bilibiliqq
+# qq2bilibili
+~~***目前还有图片文字拆分问题，请不要使用图文发送!!!***~~
 此项目用于在qq中发送bilibili动态
 使用了requests和[cqhttp](https://github.com/cqmoe/python-cqhttp)第三方库，使用前请配置环境
 ```sh
@@ -38,7 +39,7 @@ verify = Verify(sessdata="填写获取到的sessdata", csrf="填写获取到的c
 
 # 修改http插件配置
 在httpapi插件目录中找到配置文件(一般为"config/机器人qq号.json")
-将 "post_url"改为"http://127.0.0.1:8080"
+将 "post_url"改为"http://127.0.0.1:8887"
 以下是我的配置，若无特殊需要可以直接复制(使用此配置时无需修改[bilibiliqq.py中的"access_token"与"secret"](https://github.com/cdwcgt/bilibiliqq/blob/master/README.md#httpapi修改))
 ```sh
 {
@@ -54,7 +55,7 @@ verify = Verify(sessdata="填写获取到的sessdata", csrf="填写获取到的c
     "ws_reverse_reconnect_interval": 3000,
     "ws_reverse_reconnect_on_code_1000": true,
     "use_ws_reverse": false,
-    "post_url": "http://127.0.0.1:8080",
+    "post_url": "http://127.0.0.1:8887",
     "access_token": "",
     "secret": "",
     "post_message_format": "string",

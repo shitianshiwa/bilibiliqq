@@ -1,4 +1,5 @@
 # -*-coding:utf-8 -*-
+import json
 import re
 import os
 import socket
@@ -89,7 +90,7 @@ def downloadpic(shuzu):  # 下载图片
                     print(err_info)
                     count += 1
             if count > 3:
-                print("downloading picture fialed!")
+                print("图片下载失败")
                 return -1
         #print(urllib2.urlretrieve(shuzu[i], "./imgs/"+str(i)+".jpg"))
         img_path.append("./imgs/"+str(i)+".jpg")
@@ -104,17 +105,19 @@ https://blog.csdn.net/jclian91/article/details/77513289
 
 
 def findtext(string):  # 提取文本
-    if string.startswith("[CQ:image,") == False:
+    if string.find("[CQ:image,") == -1:
+        print("未检测到图片链接")
+        bot.send(mubiao, '未检测到图片链接')
         return string
     i = 0
-    temp6 = ""
-    temp5 = string.split("[CQ:image,")
-    while i < len(temp5):
-        if temp5[i].find("]") != -1:
-            temp5[i] = temp5[i].split("]")[1]
-            temp6 += temp5[i]
-        i = i+1
-    return temp6
+    str_end = ""
+    for i in string.split("[CQ:image"):
+        print(i)
+        if i.find(']')>=0:
+            str_end=str_end+i[i.find(']')+1:]
+        else :
+            str_end=str_end+i
+    return str_end
 
 
 @bot.on_message
@@ -133,6 +136,7 @@ def handle_msg(event):
             return
         # print(message)
         if suo3 == True:
+            print(temp3)
             if message != "ok":
                 bot.send(mubiao, '已停止发送动态')
                 suo1 = False
@@ -146,14 +150,14 @@ def handle_msg(event):
             if temp4 > 0:
                 print('发送图文')
                 # 上传图片类
-                #upload = UploadImages(images_path=img_path, verify=verify)
-                #draw = DrawDynamic(text=temp3,upload_images=upload,verify=verify)
-                #instant = InstantDynamic(draw)
+                upload = UploadImages(images_path=img_path, verify=verify)
+                draw = DrawDynamic(text=temp3,upload_images=upload,verify=verify)
+                instant = InstantDynamic(draw)
             elif temp4 == 0:
                 print('发送文字')
-                #text = TextDynamic(text=temp3, verify=verify)
-                #instant = InstantDynamic(text)
-            # print(instant.send())
+                text = TextDynamic(text=temp3, verify=verify)
+                instant = InstantDynamic(text)
+            print(instant.send())
             bot.send(mubiao, '发送动态成功')
             print('发送动态成功')
             suo1 = True
@@ -226,7 +230,7 @@ if __name__ == '__main__':
     except Exception as err:  # FileExistsError or OSError:
         print(str(err))
     '''
-    bot.run(host='127.0.0.1', port=8080)
+    bot.run(host='127.0.0.1', port=8887)
 
 #未严格测试！！！！！！！！！！！！！！！！！！！！！！！
 
